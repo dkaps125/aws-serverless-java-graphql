@@ -1,0 +1,26 @@
+service: aws-java-graphql-lambda
+
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  runtime: java11
+  apiGateway:
+    shouldStartNameWithService: true
+
+package:
+  artifact: build/distributions/aws-java-graphql-lambda.zip
+
+functions:
+  graphql:
+    handler: com.serverless.Handler
+    events:
+      - http:
+          path: graphql
+          method: ANY
+  playground:
+    handler: com.serverless.Playground
+    events:
+      - http:
+          path: playground
+          method: GET

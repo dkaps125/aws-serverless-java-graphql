@@ -1,0 +1,38 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile (
+            'com.amazonaws:aws-java-sdk-core:1.9.9',
+            'com.amazonaws:aws-lambda-java-core:1.2.1',
+            'com.amazonaws:aws-lambda-java-events:2.2.9',
+            'com.amazonaws:aws-lambda-java-log4j:1.0.0',
+            'com.fasterxml.jackson.core:jackson-core:2.8.5',
+            'com.fasterxml.jackson.core:jackson-databind:2.8.5',
+            'com.fasterxml.jackson.core:jackson-annotations:2.8.5',
+            'io.leangen.graphql:spqr:0.10.1',
+            'com.google.guava:guava:30.0-jre'
+    )
+}
+
+// http://docs.aws.amazon.com/lambda/latest/dg/create-deployment-pkg-zip-java.html
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+task deploy(type: Exec, dependsOn: 'build') {
+    commandLine 'serverless', 'deploy'
+}
+
+deploy.dependsOn build
+build.dependsOn buildZip
