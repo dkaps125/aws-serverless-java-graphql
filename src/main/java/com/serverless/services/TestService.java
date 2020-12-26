@@ -18,4 +18,9 @@ public class TestService extends Service {
     public Test getById(@GraphQLArgument(name = "id") Integer id) {
       return TESTS.get(id);
     }
+
+    @GraphQLQuery(name = "env")
+    public String getEnv() {
+        return System.getenv("ENVIRONMENT");
+    }
 }

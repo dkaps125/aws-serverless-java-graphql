@@ -7,6 +7,8 @@ provider:
   runtime: java11
   apiGateway:
     shouldStartNameWithService: true
+  environment:
+    ENVIRONMENT: ${opt:stage, self:provider.stage, 'dev'}
 
 package:
   artifact: build/distributions/aws-java-graphql-lambda.zip
